@@ -1,5 +1,6 @@
 package com.example.taskAPI.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,22 +20,18 @@ public class GlobalExceptionHandler {
         for (FieldError  error : ex.getBindingResult().getFieldErrors()) {
             errors.put(error.getField(), error.getDefaultMessage());
         }
-
-
-//        {
-//            "done" : "value has to be true of false"
-//
-//        }
-//        ex.getBindingResult().getFieldErrors().forEach( error ->
-//                errors.put(error.getField(), error.getDefaultMessage())
-//        );
-
         return ResponseEntity.badRequest().body(errors);
     }
 
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<String> handleTaskNotFound(TaskNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 
-
-
+    @ExceptionHandler(TaskAlreadyDoneException.class)
+    public ResponseEntity<String> handleTaskAlreadyDone(TaskAlreadyDoneException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 
 
 }
