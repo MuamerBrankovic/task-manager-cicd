@@ -22,6 +22,11 @@ public class TaskService {
     }
 
     public Task addTask(Task task) {
+        int newId = repository.findAll().stream()
+                .mapToInt(Task::getId)
+                .max()
+                .orElse(0) + 1;
+        task.setId(newId);
         repository.save(task);
         return task;
     }
