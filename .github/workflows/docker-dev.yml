@@ -21,3 +21,6 @@ jobs:
         with:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/task-manager-dev:latest
+
+      - name: Trigger Render deploy
+        run: curl -X POST ${{ secrets.RENDER_DEV_DEPLOY_HOOK }}
