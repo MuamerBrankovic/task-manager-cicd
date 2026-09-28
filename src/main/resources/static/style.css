@@ -1,0 +1,31 @@
+
+
+body {
+    font-family: sans-serif;
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+#error-message {
+    color: red;
+    margin-bottom: 10px;
+}
+
+#task-list {
+    list-style: none;
+    padding: 0;
+}
+
+#task-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+}
+
+.done {
+    text-decoration: line-through;
+    color: gray;
+}
