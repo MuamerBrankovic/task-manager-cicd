@@ -123,6 +123,49 @@ class TaskServiceTest {
         assertThrows(TaskAlreadyDoneException.class, () -> service.patchTask(1, new Task(null, null, true)));
     }
 
+    @Test
+    void shouldGiveIdOneWhenNoTasksExist() {
+        //Arrange
+        Task task = new Task(null, "gurka", false);
+
+        //Act
+        Task result = service.addTask(task);
+
+        //Assert
+        assertEquals(1, result.getId());
+        verify(repository).save(task);
+    }
+
+    @Test
+    void shouldAssignNextIdWhenAddingTask() {
+        //Arrange
+        when(repository.findAll()).thenReturn(List.of(
+                new Task(1, "gurka", false),
+                new Task(5, "tomat", true)));
+        Task task = new Task(null, "mjölk", false);
+
+        //Act
+        Task result = service.addTask(task);
+
+        //Assert
+        assertEquals(6, result.getId());
+        verify(repository).save(task);
+    }
+
+    @Test
+    void shouldAllowMarkingDoneTaskAsNotDone() {
+        //Arrange
+        Task task = new Task(1, "morot", true);
+        when(repository.findById(1)).thenReturn(task);
+
+        //Act
+        Task result = service.patchTask(1, new Task(null, null, false));
+
+        //Assert
+        assertFalse(result.isDone());
+        verify(repository).findById(1);
+    }
+
 }
 
 
